@@ -1,0 +1,1 @@
+An educational project where ChatGPT leads me by the hand. On one hand, an attempt to improve my Python, which is very weak, on the other hand - maybe someday I'll complete (most likely not) a fully usable library for working with wonderful Cropwise Operations.
