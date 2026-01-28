@@ -35,6 +35,8 @@ class Auth:
 
         response.raise_for_status()
         self.token = response.json().get("user_api_token")
+        if not self.token:
+            raise Exception("Token not found in response")
         self.save_token()
         return self.token
 
