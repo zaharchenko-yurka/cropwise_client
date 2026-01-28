@@ -76,5 +76,3 @@ class CropwiseClient:
                 logger.warning("Помилка мережі: %s. Спроба %d з %d.", str(e), attempt + 1, retries)
                 time.sleep(2 ** attempt)  # експоненціальне збільшення затримки
 
-    def get_fields(self):
-        return self._request("GET", "/fields")

@@ -1,4 +1,5 @@
 import requests
+import time
 import json
 import os
 import logging
@@ -14,7 +15,7 @@ logger.addHandler(handler)
 
 class Auth:
     '''
-    Docstring for Auth
+    Клас для автентифікації користувача та отримання токена API.
     '''
     TOKEN_FILE = ".cashe/.cropwise_token.json"
 
@@ -25,6 +26,12 @@ class Auth:
         self.token = None
 
     def login(self, retries: int =3) -> str:
+        '''
+        Виконує вхід користувача та повертає API токен.
+        
+        :param retries: Кількість спроб повторного з'єднання у разі помилки мережі
+        :return: API токен
+        '''
         token = self.load_token()
         if token:
             self.token = token
@@ -79,11 +86,17 @@ class Auth:
                 time.sleep(2 ** attempt)
 
     def save_token(self):
+        '''
+        Зберігає токен у файл.
+        '''
         os.makedirs(os.path.dirname(self.TOKEN_FILE), exist_ok=True)
         with open(self.TOKEN_FILE, "w", encoding="utf-8") as f:
             json.dump({"token": self.token}, f)
 
     def load_token(self):
+        '''
+        Завантажує токен з файлу.
+        '''
         if os.path.exists(self.TOKEN_FILE):
             with open(self.TOKEN_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
