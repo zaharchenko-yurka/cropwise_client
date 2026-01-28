@@ -61,19 +61,19 @@ class CropwiseClient:
                     continue  # повторити запит після оновлення токена 
                 elif response.status_code == 403:
                     logger.error("Доступ заборонено. Перевірте свої права доступу.")
-                    raise PermissionDeniedError("Доступ заборонено. Перевірте свої права доступу.")
+                    raise PermissionDeniedError("Access denied.")
                 elif response.status_code == 404:
                     logger.error("Ресурс не знайдено.")
-                    raise NotFoundError("Ресурс не знайдено.")
+                    raise NotFoundError("Resource not found.")
                 elif response.status_code in (500, 502, 503, 504):
                     logger.error(f"Помилка сервера: {response.status_code}")
-                    raise ServerError(f"Помилка сервера: {response.status_code}")
+                    raise ServerError(f"Server error: {response.status_code}")
                 
                 return response.json()
             except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
                 if attempt == retries:
-                    raise CropwiseAPIError(f"Помилка мережі після {retries} спроб: {str(e)}") from e
-                logger.warning(f"Помилка мережі: {str(e)}. Спроба {attempt + 1} з {retries}.")
+                    raise CropwiseAPIError(f"Networking error: {str(e)}") from e
+                logger.warning("Помилка мережі: %s. Спроба %d з %d.", str(e), attempt + 1, retries)
                 time.sleep(2 ** attempt)  # експоненціальне збільшення затримки
 
     def get_fields(self):

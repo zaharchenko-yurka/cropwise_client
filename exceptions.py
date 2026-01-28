@@ -13,3 +13,7 @@ class PermissionDeniedError(CropwiseAPIError):
 class ServerError(CropwiseAPIError):
     """Виняток, що виникає при помилках на стороні сервера."""
     pass
+
+class AuthenticationError(CropwiseAPIError):
+    """Виняток, що виникає при проблемах автентифікації."""
+    pass
