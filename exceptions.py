@@ -17,3 +17,11 @@ class ServerError(CropwiseAPIError):
 class AuthenticationError(CropwiseAPIError):
     """Виняток, що виникає при проблемах автентифікації."""
     pass
+
+class UnprocessableEntityError(CropwiseAPIError):
+    """Виняток, що виникає при некоректних даних у запиті."""
+    pass
+
+class DeletionNotAllowed(CropwiseAPIError):
+    """Виняток, що виникає коли користувач не має прав на видалення ресурсу."""
+    pass

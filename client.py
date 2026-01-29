@@ -4,7 +4,7 @@ import logging
 from auth import Auth
 from endpoints.fields import FieldsEndpoint
 from endpoints.operations import OperationsEndpoint
-from exceptions import CropwiseAPIError, ServerError, PermissionDeniedError, NotFoundError
+from exceptions import CropwiseAPIError, ServerError, PermissionDeniedError, NotFoundError, DeletionNotAllowed, UnprocessableEntityError
 
 logger = logging.getLogger("cropwise_client")
 logger.setLevel(logging.INFO)
@@ -58,13 +58,20 @@ class CropwiseClient:
                 if response.status_code == 401:
                     logger.warning("Токен автентифікації недійсний або прострочений. Виконується повторний вхід.")
                     self.token = self.auth.login()
-                    continue  # повторити запит після оновлення токена 
+                    continue  # повторити запит після оновлення токена
+                elif response.status_code == 302:
+                    logger.warning(f"Видалення ресурсу цим користувачем заборонено.")
+                    raise DeletionNotAllowed("Deletion not allowed.")
                 elif response.status_code == 403:
                     logger.error("Доступ заборонено. Перевірте свої права доступу.")
                     raise PermissionDeniedError("Access denied.")
                 elif response.status_code == 404:
                     logger.error("Ресурс не знайдено.")
                     raise NotFoundError("Resource not found.")
+                elif response.status_code == 422:
+                    logger.error("Некоректні дані у запиті.")
+                    logger.error(f"Деталі: {response.text}")
+                    raise UnprocessableEntityError("Unprocessable entity.")
                 elif response.status_code in (500, 502, 503, 504):
                     logger.error(f"Помилка сервера: {response.status_code}")
                     raise ServerError(f"Server error: {response.status_code}")
