@@ -10,4 +10,4 @@ password = os.getenv("CROPWISE_PASSWORD")
 if __name__ == "__main__":
     client = CropwiseClient(email=email, password=password)
     #fields = client.get_fields()
-    print(client.fields.get(23))
+    print(client.fields.list_of_ids())
