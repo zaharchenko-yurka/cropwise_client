@@ -3,7 +3,7 @@ import requests
 import logging
 from auth import Auth
 from endpoints.fields import FieldsEndpoint
-from endpoints.operations import OperationsEndpoint
+from endpoints.agro_operations import OperationsEndpoint
 from exceptions import CropwiseAPIError, ServerError, PermissionDeniedError, NotFoundError, DeletionNotAllowed, UnprocessableEntityError
 from utils import setup_logging
 
